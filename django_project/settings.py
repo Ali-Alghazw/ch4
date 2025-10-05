@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from environs import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,8 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_REDIRECT_URL = "home" # new
-LOGOUT_REDIRECT_URL = "home" # new
+LOGIN_REDIRECT_URL = "home" 
+LOGOUT_REDIRECT_URL = "home" 
 
 # Application definition
 
@@ -39,36 +40,43 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	"django.contrib.sites", # new
+	"django.contrib.sites", 
     # Local
-    "accounts.apps.AccountsConfig", # new
-    "pages.apps.PagesConfig", # new
-	"allauth", # new
-	"allauth.account", # new
+    "accounts.apps.AccountsConfig", 
+    "pages.apps.PagesConfig", 
+	"allauth", 
+	"allauth.account", 
 	# 3rd party
 	"crispy_forms",
     "crispy_bootstrap5",
 ]
+env = Env() 
+env.read_env() 
+SECRET_KEY = "django-insecure-hv1(e0r@v4n4m6gqdz%dn(60o=dsy8&@0_lbs8p-v3u^bs4)xl"
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
+DEBUG = False 
+ALLOWED_HOSTS = [".herokuapp.com", "localhost", "127.0.0.1"]
+DEBUG = env.bool("DJANGO_DEBUG")
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
-AUTH_USER_MODEL = "accounts.CustomUser" # new
+AUTH_USER_MODEL = "accounts.CustomUser" 
 # django-allauth config
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
 	"django.contrib.auth.backends.ModelBackend",
 	"allauth.account.auth_backends.AuthenticationBackend",
 )
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" # new
-ACCOUNT_LOGOUT_REDIRECT = "home" # new
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" 
+ACCOUNT_LOGOUT_REDIRECT = "home" 
 
-ACCOUNT_SESSION_REMEMBER = True # new
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False # new
-ACCOUNT_USERNAME_REQUIRED = False # new
-ACCOUNT_AUTHENTICATION_METHOD = "email" # new
-ACCOUNT_EMAIL_REQUIRED = True # new
-ACCOUNT_UNIQUE_EMAIL = True # new
+ACCOUNT_SESSION_REMEMBER = True 
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False 
+ACCOUNT_USERNAME_REQUIRED = False 
+ACCOUNT_AUTHENTICATION_METHOD = "email" 
+ACCOUNT_EMAIL_REQUIRED = True 
+ACCOUNT_UNIQUE_EMAIL = True 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -106,14 +114,7 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 
 # django_project/settings.py
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",
-        "PORT": 5432,
-    }
+    "default": env.dj_db_url("DATABASE_URL", default="postgres://postgres@db/postgres")
 }
 
 
