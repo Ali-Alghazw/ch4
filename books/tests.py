@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth import get_user_model # ne
 from .models import Book
+from .models import Book, Review # new
 
 class BookTests(TestCase):
 	@classmethod
@@ -25,4 +27,5 @@ class BookTests(TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(no_response.status_code, 404)
 		self.assertContains(response, "Harry Potter")
+		self.assertContains(response, "An excellent review") # new
 		self.assertTemplateUsed(response, "books/book_detail.html")

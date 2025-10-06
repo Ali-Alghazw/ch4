@@ -1,6 +1,7 @@
 from django.db import models
 import uuid # new
 from django.urls import reverse # new
+from django.contrib.auth import get_user_model # new
 
 class Book(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -12,3 +13,17 @@ class Book(models.Model):
 		return self.title	
 	def get_absolute_url(self):
 		return reverse("book_detail", args=[str(self.id)])
+
+
+class Review(models.Model): # new
+	book = models.ForeignKey(
+		Book,
+		on_delete=models.CASCADE,
+		related_name="reviews",)
+	review = models.CharField(max_length=255)
+	author = models.ForeignKey(
+		get_user_model(),
+		on_delete=models.CASCADE,
+	)
+	def __str__(self):
+		return self.review
