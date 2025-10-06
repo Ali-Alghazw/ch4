@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 	"django.contrib.sites", 
     # Local
     "accounts.apps.AccountsConfig", 
-    "pages.apps.PagesConfig", 
+    "pages.apps.PagesConfig",
+	"books.apps.BooksConfig", # new 
 	"allauth", 
 	"allauth.account", 
 	# 3rd party
@@ -68,7 +69,9 @@ AUTHENTICATION_BACKENDS = (
 	"django.contrib.auth.backends.ModelBackend",
 	"allauth.account.auth_backends.AuthenticationBackend",
 )
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" 
+#EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend" # new
+
 ACCOUNT_LOGOUT_REDIRECT = "home" 
 
 ACCOUNT_SESSION_REMEMBER = True 
@@ -148,6 +151,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+DEFAULT_FROM_EMAIL = "admin@djangobookstore.com"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
